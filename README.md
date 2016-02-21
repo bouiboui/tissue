@@ -66,10 +66,16 @@ All parameters are optional. For security purposes, think twice before setting t
 ## Credits
 
 - bouiboui — [Github](https://github.com/bouiboui) [Twitter](https://twitter.com/j_____________n) [Website](http://cod3.net)
+- [All contributors](https://github.com/bouiboui/tissue/graphs/contributors)
 
 ## License
 
-Unlicense. Public domain, basically. Please treat it kindly. See [License File](LICENSE) for more information.
+Unlicense. Public domain, basically. Please treat it kindly. See [License File](LICENSE) for more information. 
+
+This project uses the following open source projects 
+- [knplabs/github-api](https://github.com/KnpLabs/php-github-api) by [KnpLabs](https://github.com/KnpLabs) — [License](https://github.com/KnpLabs/php-github-api/blob/master/LICENSE).
+- [symfony/yaml](https://github.com/symfony/yaml) by [Fabien Potencier](https://github.com/fabpot) — [License](https://github.com/symfony/yaml/blob/master/LICENSE).
+- [phpunit/phpunit](https://github.com/sebastianbergmann/phpunit) by [Sebastian Bergmann](https://github.com/sebastianbergmann) — [License](https://github.com/sebastianbergmann/phpunit/blob/master/LICENSE).
 
 [ico-version]: https://img.shields.io/packagist/v/bouiboui/tissue.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-Unlicense-brightgreen.svg?style=flat-square
