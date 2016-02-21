@@ -42,7 +42,8 @@ try {
 ```
 Creates the following issue:
 
-![Something like this](http://i.imgur.com/o5otoKU.png)
+![Something like this](http://i.imgur.com/N5r8Ljh.png)
+![Something like this](http://i.imgur.com/a96l7hR.png)
 
 All parameters are optional. For security purposes, think twice before setting the `trace` parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to your files on your server.
 
