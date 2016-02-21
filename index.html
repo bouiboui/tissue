@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Tissue by bouiboui</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Tissue</h1>
+      <h2 class="project-tagline">Create Github issues from your code&#39;s Exceptions</h2>
+      <a href="https://github.com/bouiboui/tissue" class="btn">View on GitHub</a>
+      <a href="https://github.com/bouiboui/tissue/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/bouiboui/tissue/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p>Create Github issues from your <code>catch {}</code> blocks. I was heavily inspired by <a href="https://ohcrash.com/">ohCrash</a>.</p>
+
+<p>When you call <code>Tissue::create</code>, a Github issue is created in the repo of your choice and a "bug" label is automatically applied. Duplicates are detected, to a certain extent.</p>
+
+<p>The name comes from "Throw ISSUE" — genius, I know.</p>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h2>
+
+<div class="highlight highlight-source-shell"><pre>$ composer require bouiboui/tissue</pre></div>
+
+<p>Create a local <code>config/config.yaml</code> file from the template in <a href="https://github.com/bouiboui/tissue/blob/master/config/config.yaml.dist"><code>config/config.yaml.dist</code></a></p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c"># Not shown: include composer's autoload.php</span></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">bouiboui\Tissue\Tissue</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">try</span> {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-c1">ErrorException</span>(<span class="pl-s"><span class="pl-pds">'</span>This is your issue title and message.<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">} <span class="pl-k">catch</span> (<span class="pl-c1">\</span><span class="pl-c1">ErrorException</span> <span class="pl-smi">$e</span>) {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-c1">Tissue</span><span class="pl-k">::</span>create(</span>
+<span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getMessage(),</span>
+<span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getCode(),</span>
+<span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getSeverity(),</span>
+<span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getFile(),</span>
+<span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getLine(),</span>
+<span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getTraceAsString()</span>
+<span class="pl-s1">    );</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c1">var_dump</span>(<span class="pl-smi">$result</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">}</span></pre></div>
+
+<p>Creates the following issue:</p>
+
+<p><img src="http://i.imgur.com/N5r8Ljh.png" alt="Something like this">
+<img src="http://i.imgur.com/a96l7hR.png" alt="Something like this"></p>
+
+<p>And outputs the following:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">array</span>(<span class="pl-c1">3</span>) {</span>
+<span class="pl-s1">  [<span class="pl-s"><span class="pl-pds">"</span>duplicate<span class="pl-pds">"</span></span>]<span class="pl-k">=&gt;</span></span>
+<span class="pl-s1">  <span class="pl-k">bool</span>(<span class="pl-c1">false</span>)</span>
+<span class="pl-s1">  [<span class="pl-s"><span class="pl-pds">"</span>number<span class="pl-pds">"</span></span>]<span class="pl-k">=&gt;</span></span>
+<span class="pl-s1">  <span class="pl-k">int</span>(<span class="pl-c1">35</span>)</span>
+<span class="pl-s1">  [<span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>]<span class="pl-k">=&gt;</span></span>
+<span class="pl-s1">  <span class="pl-k">string</span>(<span class="pl-c1">50</span>) <span class="pl-s"><span class="pl-pds">"</span>https://api.github.com/repos/author/name/issues/35<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">}</span></pre></div>
+
+<p>All parameters are optional. For security purposes, think twice before setting the <code>trace</code> parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to the files on your server.</p>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h2>
+
+<ul>
+<li>bouiboui — <a href="https://github.com/bouiboui">Github</a> <a href="https://twitter.com/j_____________n">Twitter</a> <a href="http://cod3.net">Website</a>
+</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>Unlicense. Public domain, basically. Please treat it kindly. See <a href="LICENSE">License File</a> for more information.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/bouiboui/tissue">Tissue</a> is maintained by <a href="https://github.com/bouiboui">bouiboui</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
