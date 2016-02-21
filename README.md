@@ -54,9 +54,9 @@ array(3) {
   ["duplicate"]=>
   bool(false)
   ["number"]=>
-  int(38)
+  int(35)
   ["url"]=>
-  string(63) "https://api.github.com/repos/author/name/issues/38"
+  string(50) "https://api.github.com/repos/author/name/issues/35"
 }
 ```
 
