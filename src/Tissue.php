@@ -14,10 +14,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Tissue
 {
+    const DEFAULT_CONFIG_PATH = 'config/config.yaml';
 
     /** @var array Configuration to be overwritten by the contents of config/config.yaml */
-    private static $config = [];
-    private static $configPath;
+    private static $config;
+
+    private static $configPath = self::DEFAULT_CONFIG_PATH;
 
     /**
      * Change config path (useful for tests)
@@ -25,6 +27,9 @@ class Tissue
      */
     public static function setConfigPath($configPath)
     {
+        if (is_null($configPath)) {
+            $configPath = static::DEFAULT_CONFIG_PATH;
+        }
         static::$configPath = $configPath;
     }
 
@@ -68,8 +73,8 @@ class Tissue
      */
     static private function loadConfig()
     {
-        if (null === static::$configPath) {
-            static::$configPath = 'config/config.yaml';
+        if (!empty(static::$config)) {
+            return;
         }
         if (!file_exists(static::$configPath) || !is_readable(static::$configPath)) {
             throw new \ErrorException('Config file not found or unreadable.');
