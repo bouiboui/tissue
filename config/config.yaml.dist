@@ -1,0 +1,7 @@
+tissue:
+  you:
+    username:   yourGithubUsername
+    password:   yourGithubPassword
+  repo:
+    author:     repoAuthor
+    name:       repoName

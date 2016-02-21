@@ -1,0 +1,15 @@
+{
+  "require": {
+    "knplabs/github-api": "1.5.1",
+    "symfony/yaml": "v3.0.2",
+    "symfony/http-foundation": "^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.2.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "bouiboui\\Tissue\\": "src/"
+    }
+  }
+}
