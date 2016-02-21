@@ -39,51 +39,18 @@ class GithubIssue
         if (null === $message) {
             $message = 'An error occured.';
         }
+
         // Format the title under 50 characters
-        $shortMessage = $message;
-        if (mb_strlen($message) >= GithubIssue::READABLE_TITLE_LENGTH) {
-            $shortMessage = mb_substr($message, 0, GithubIssue::READABLE_TITLE_LENGTH - 1) . '…';
-        }
-
-        $title = '';
-        // [basename($path):$line] $shortMessage
-        if (null !== $path) {
-            $title .= '[' . basename($path);
-            if (null !== $lineno) {
-                $title .= ':' . $lineno;
-            }
-            $title .= '] ';
-        }
-        $title .= $shortMessage;
-
-        $this->title = $title;
+        $this->title = GithubIssue::formatTitle($path, $lineno, $message);
 
         // Only display a two-parent-directories-deep path, for readability
-        $dirs = explode(DIRECTORY_SEPARATOR, $path);
-        $shortPath = '..' . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_slice($dirs, count($dirs) - 3));
-
-        $displayCode = null !== $code;
-        $displaySeverity = null !== $severity;
+        $shortPath = GithubIssue::formatPath($path);
 
         $bodyContents = [];
 
         // Head table (Code and Severity)
-        if ($displayCode || $displaySeverity) {
-            $tableTitle = '';
-            $tableContents = '';
-            $tableDivider = '---';
-            if ($displayCode && $displaySeverity) {
-                $tableTitle = 'Code | Severity';
-                $tableDivider = '--- | ---';
-                $tableContents = $code . ' | ' . $severity;
-            } else if ($displayCode) {
-                $tableTitle = 'Code';
-                $tableContents = $code;
-            } else if ($displaySeverity) {
-                $tableTitle = 'Severity';
-                $tableContents = $severity;
-            }
-            $bodyContents[] = '| ' . $tableTitle . ' |' . PHP_EOL . '| ' . $tableDivider . ' |' . PHP_EOL . '| ' . $tableContents . ' |';
+        if (null !== $code || null !== $severity) {
+            $bodyContents[] = GithubIssue::formatTable($code, $severity);
         }
 
         // $path:$line
@@ -102,7 +69,81 @@ class GithubIssue
         }
 
         // Format the body
-        $this->body = implode(PHP_EOL . PHP_EOL, $bodyContents);
+        $this->body = GithubIssue::formatBody($bodyContents);
+    }
+
+    /**
+     * Formats the issue's title
+     * @param $path
+     * @param $lineno
+     * @param $message
+     * @return string
+     */
+    private static function formatTitle($path, $lineno, $message)
+    {
+        $title = '';
+        // [basename($path):$line] $shortMessage
+        if (null !== $path) {
+            $title .= '[' . basename($path);
+            if (null !== $lineno) {
+                $title .= ':' . $lineno;
+            }
+            $title .= '] ';
+        }
+        $shortMessage = $message;
+        if (mb_strlen($message) >= GithubIssue::READABLE_TITLE_LENGTH) {
+            $shortMessage = mb_substr($message, 0, GithubIssue::READABLE_TITLE_LENGTH - 1) . '…';
+        }
+        $title .= $shortMessage;
+        return $title;
+    }
+
+    /**
+     * Formats the issue's path
+     * @param $path
+     * @return string
+     */
+    private static function formatPath($path)
+    {
+        $dirs = explode(DIRECTORY_SEPARATOR, $path);
+        return '..' . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_slice($dirs, count($dirs) - 3));
+    }
+
+    /**
+     * Formats the issue's table
+     * @param $code
+     * @param $severity
+     * @return string
+     */
+    private static function formatTable($code, $severity)
+    {
+        $displayCode = null !== $code;
+        $displaySeverity = null !== $severity;
+        $tableTitle = '';
+        $tableContents = '';
+        $tableDivider = '---';
+        if ($displayCode && $displaySeverity) {
+            $tableTitle = 'Code | Severity';
+            $tableDivider = '--- | ---';
+            $tableContents = $code . ' | ' . $severity;
+        } else if ($displayCode) {
+            $tableTitle = 'Code';
+            $tableContents = $code;
+        } else if ($displaySeverity) {
+            $tableTitle = 'Severity';
+            $tableContents = $severity;
+        }
+        return '| ' . $tableTitle . ' |' . PHP_EOL . '| ' . $tableDivider . ' |' . PHP_EOL . '| ' . $tableContents . ' |';
+    }
+
+    /**
+     * Formats the issue's body
+     * @param array $bodyContents
+     * @return string
+     */
+    private static function formatBody(array $bodyContents)
+    {
+        return implode(PHP_EOL . PHP_EOL, $bodyContents);
     }
 
     /**
