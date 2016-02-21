@@ -60,7 +60,7 @@ array(3) {
 }
 ```
 
-All parameters are optional. For security purposes, think twice before setting the `trace` parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to your files on your server.
+All parameters are optional. For security purposes, think twice before setting the `trace` parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to the files on your server.
 
 ## Credits
 
