@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![License][ico-license]](LICENSE)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/fdc3c186-f787-4427-9c81-a3f82f3db720/mini.png)](https://insight.sensiolabs.com/projects/fdc3c186-f787-4427-9c81-a3f82f3db720)
 
 Create Github issues from your ``catch {}`` blocks. I was heavily inspired by [ohCrash](https://ohcrash.com/).
 
