@@ -62,6 +62,28 @@ class Tissue
     }
 
     /**
+     * Bind Tissue to the Uncaught Exception Handler.
+     *
+     * If there is an existing uncaught exception handler it
+     *  will be removed.
+     */
+    public static function bindUncaughtExceptionHandler()
+    {
+        set_exception_handler(
+            function($e) {
+                static::create(
+                    $e->getMessage(),
+                    $e->getCode(),
+                    $e->getSeverity(),
+                    $e->getFile(),
+                    $e->getLine(),
+                    $e->getTraceAsString()
+                );
+            }
+        );
+    }
+
+    /**
      * Loads configuration
      * @throws \ErrorException
      * @throws ParseException
