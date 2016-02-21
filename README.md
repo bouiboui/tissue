@@ -37,6 +37,8 @@ try {
         $e->getLine(),
         $e->getTraceAsString()
     );
+    
+    var_dump($result);
 
 }
 ```
@@ -44,6 +46,19 @@ Creates the following issue:
 
 ![Something like this](http://i.imgur.com/N5r8Ljh.png)
 ![Something like this](http://i.imgur.com/a96l7hR.png)
+
+And outputs the following:
+
+``` php
+array(3) {
+  ["duplicate"]=>
+  bool(false)
+  ["number"]=>
+  int(38)
+  ["url"]=>
+  string(63) "https://api.github.com/repos/author/name/issues/38"
+}
+```
 
 All parameters are optional. For security purposes, think twice before setting the `trace` parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to your files on your server.
 
