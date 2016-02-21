@@ -3,7 +3,6 @@
 namespace bouiboui\Tissue;
 
 use Github\Exception\ErrorException;
-use Symfony\Component\HttpFoundation\Request;
 
 define('TEST_CONFIG_PATH', dirname(__DIR__) . '/config/config.test.yaml');
 
@@ -25,15 +24,8 @@ class TissueTest extends \PHPUnit_Framework_TestCase
 
         } catch (\ErrorException $e) {
 
-            $c = new Tissue(TEST_CONFIG_PATH);
-            $r = Request::create('localhost', 'GET', [
-                'code' => $e->getCode(),
-                'filename' => $e->getFile(),
-                'message' => $e->getMessage(),
-                'severity' => $e->getSeverity(),
-            ]);
-
-            $c->throwIssue($r);
+            Tissue::setConfigPath(TEST_CONFIG_PATH);
+            Tissue::create($e->getMessage(), $e->getCode(), $e->getSeverity(), $e->getFile());
         }
     }
 
@@ -49,14 +41,8 @@ class TissueTest extends \PHPUnit_Framework_TestCase
 
         } catch (\ErrorException $e) {
 
-            $c = new Tissue(TEST_CONFIG_PATH);
-            $r = Request::create('localhost', 'GET', [
-                'line' => $e->getLine(),
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            $c->throwIssue($r);
+            Tissue::setConfigPath(TEST_CONFIG_PATH);
+            Tissue::create($e->getMessage(), null, null, null, $e->getLine(), $e->getTraceAsString());
         }
     }
 
@@ -72,13 +58,8 @@ class TissueTest extends \PHPUnit_Framework_TestCase
 
         } catch (\ErrorException $e) {
 
-            $c = new Tissue(TEST_CONFIG_PATH);
-            $r = Request::create('localhost', 'GET', [
-                'filename' => $e->getFile(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            $c->throwIssue($r);
+            Tissue::setConfigPath(TEST_CONFIG_PATH);
+            Tissue::create(null, null, null, $e->getFile(), null, $e->getTraceAsString());
         }
     }
 
@@ -94,17 +75,15 @@ class TissueTest extends \PHPUnit_Framework_TestCase
 
         } catch (\ErrorException $e) {
 
-            $c = new Tissue(TEST_CONFIG_PATH);
-            $r = Request::create('localhost', 'GET', [
-                'code' => $e->getCode(),
-                'filename' => $e->getFile(),
-                'line' => $e->getLine(),
-                'message' => $e->getMessage(),
-                'severity' => $e->getSeverity(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            $result = $c->throwIssue($r);
+            Tissue::setConfigPath(TEST_CONFIG_PATH);
+            $result = Tissue::create(
+                $e->getMessage(),
+                $e->getCode(),
+                $e->getSeverity(),
+                $e->getFile(),
+                $e->getLine(),
+                $e->getTraceAsString()
+            );
 
             static::assertNotNull($result, 'null result received');
             static::assertTrue(array_key_exists('duplicate', $result), 'duplicate parameter missing');
