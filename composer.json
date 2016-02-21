@@ -1,8 +1,23 @@
 {
+  "name": "bouiboui/tissue",
+  "description": "Create Github issues from your Exceptions",
+  "keywords": [
+    "Github",
+    "issue",
+    "exception",
+    "error"
+  ],
+  "license": "Unlicense",
+  "authors": [
+    {
+      "name": "bouiboui",
+      "homepage": "http://cod3.net"
+    }
+  ],
   "require": {
     "knplabs/github-api": "1.5.1",
     "symfony/yaml": "v3.0.2",
-    "symfony/http-foundation": "^3.0"
+    "symfony/http-foundation": "v3.0.2"
   },
   "require-dev": {
     "phpunit/phpunit": "5.2.9"
