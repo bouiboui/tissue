@@ -15,7 +15,7 @@ The name comes from "Throw ISSUE" — genius, I know.
 $ composer require bouiboui/tissue
 ```
 
-Copy ``config/config.yaml.dist``, update it and save as ``config/config.yaml``
+Create a local ``config/config.yaml`` file from the template in [``config/config.yaml.dist``](https://github.com/bouiboui/tissue/blob/master/config/config.yaml.dist)
 
 ## Usage
 
