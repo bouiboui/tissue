@@ -69,7 +69,7 @@ class Tissue
     static private function loadConfig()
     {
         if (null === static::$configPath) {
-            static::$configPath = dirname(__DIR__) . '/config/config.yaml';
+            static::$configPath = 'config/config.yaml';
         }
         if (!file_exists(static::$configPath) || !is_readable(static::$configPath)) {
             throw new \ErrorException('Config file not found or unreadable.');

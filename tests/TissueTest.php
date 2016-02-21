@@ -4,7 +4,7 @@ namespace bouiboui\Tissue;
 
 use Github\Exception\ErrorException;
 
-define('TEST_CONFIG_PATH', dirname(__DIR__) . '/config/config.test.yaml');
+define('TEST_CONFIG_PATH', 'config/config.test.yaml');
 
 /**
  * Class TissueTest
