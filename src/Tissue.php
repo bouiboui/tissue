@@ -29,6 +29,36 @@ class Tissue
     }
 
     /**
+     * Bind Tissue to the Uncaught Exception Handler.
+     *
+     * If there is an existing uncaught exception handler it will be removed.
+     * @throws \ErrorException
+     * @throws InvalidArgumentException
+     * @throws MissingArgumentException
+     * @throws ParseException
+     */
+    public static function bindUncaughtExceptionHandler()
+    {
+        set_exception_handler(
+            function (\Throwable $e) { // Throwable for PHP7 compatibility
+                $severity = null;
+                // getSeverity doesn't exist in base Exceptions
+                if (method_exists($e, 'getSeverity')) {
+                    $severity = $e->getSeverity();
+                }
+                static::create(
+                    $e->getMessage(),
+                    $e->getCode(),
+                    $severity,
+                    $e->getFile(),
+                    $e->getLine(),
+                    $e->getTraceAsString()
+                );
+            }
+        );
+    }
+
+    /**
      * Create an issue from the sent request
      * @param null $message
      * @param null $code
@@ -59,28 +89,6 @@ class Tissue
             static::$config['repo']['name']
         );
 
-    }
-
-    /**
-     * Bind Tissue to the Uncaught Exception Handler.
-     *
-     * If there is an existing uncaught exception handler it
-     *  will be removed.
-     */
-    public static function bindUncaughtExceptionHandler()
-    {
-        set_exception_handler(
-            function($e) {
-                static::create(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e->getSeverity(),
-                    $e->getFile(),
-                    $e->getLine(),
-                    $e->getTraceAsString()
-                );
-            }
-        );
     }
 
     /**
