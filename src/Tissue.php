@@ -33,7 +33,7 @@ class Tissue
      * Bind Tissue to the Uncaught Exception Handler.
      *
      * If there is an existing uncaught exception handler it will be removed.
-     * @throws \ErrorException
+     * @throws ErrorException
      * @throws InvalidArgumentException
      * @throws MissingArgumentException
      * @throws ParseException
@@ -48,7 +48,7 @@ class Tissue
     /**
      * Create an issue from an Exception
      * @param \Exception $e
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public static function createFromException(\Exception $e)
     {
@@ -76,7 +76,7 @@ class Tissue
      * @param null $lineno
      * @param null $trace
      * @return array
-     * @throws \ErrorException
+     * @throws ErrorException
      * @throws InvalidArgumentException
      * @throws MissingArgumentException
      * @throws ParseException
@@ -86,7 +86,7 @@ class Tissue
         static::loadConfig();
 
         if (null === array_unique([$message, $code, $severity, $path, $lineno, $trace])) {
-            throw new \ErrorException('At least one parameter must be set.');
+            throw new ErrorException('At least one parameter must be set.');
         }
 
         $issue = new GithubIssue($message, $code, $severity, $path, $lineno, $trace);
@@ -101,7 +101,7 @@ class Tissue
 
     /**
      * Loads configuration
-     * @throws \ErrorException
+     * @throws ErrorException
      * @throws ParseException
      */
     static private function loadConfig()
@@ -111,7 +111,7 @@ class Tissue
             return;
         }
         if (!file_exists(static::$configPath) || !is_readable(static::$configPath)) {
-            throw new \ErrorException('Config file not found or unreadable.');
+            throw new ErrorException('Config file not found or unreadable.');
         }
         $config = Yaml::parse(file_get_contents(static::$configPath))['tissue'];
 
@@ -119,7 +119,7 @@ class Tissue
             ['username', 'password'] !== array_keys($config['you']) ||
             ['author', 'name'] !== array_keys($config['repo'])
         ) {
-            throw new \ErrorException('Invalid config file.');
+            throw new ErrorException('Invalid config file.');
         }
         static::$config = $config;
     }

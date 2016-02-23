@@ -155,7 +155,7 @@ class GithubIssue
      * @return array
      * @throws InvalidArgumentException
      * @throws MissingArgumentException
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public function commit($yourUsername, $yourPassword, $targetRepoAuthor, $targetRepoName)
     {
@@ -184,7 +184,7 @@ class GithubIssue
         );
 
         if (!array_key_exists('number', $issueInfo) || !array_key_exists('url', $issueInfo)) {
-            throw new \ErrorException('Missing Github issue info parameter');
+            throw new ErrorException('Missing Github issue info parameter');
         }
 
         // Apply the "Bug" label
