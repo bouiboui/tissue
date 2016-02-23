@@ -20,8 +20,17 @@ Create a local ``config/config.yaml`` file from the template in [``config/config
 
 ## Usage
 
+**The easy way: `bindUncaughtExceptionHandler`**
 ``` php
-# Not shown: include composer's autoload.php
+// Not shown: include composer's autoload.php
+use bouiboui\Tissue\Tissue;
+
+// All uncaught exceptions will trigger the creation of a Github issue
+Tissue::bindUncaughtExceptionHandler();
+```
+**The catch-block-specific way: `createFromException`**
+``` php
+// Not shown: include composer's autoload.php
 use bouiboui\Tissue\Tissue;
 
 try {
@@ -30,6 +39,24 @@ try {
 
 } catch (\ErrorException $e) {
 
+    // Only exceptions caught by this block will create Github issues
+    $result = Tissue::createFromException($e);
+
+}
+```
+
+**The "customized output" way**
+``` php
+// Not shown: include composer's autoload.php
+use bouiboui\Tissue\Tissue;
+
+try {
+
+    throw new ErrorException('This is your issue title and message.');
+
+} catch (\ErrorException $e) {
+
+    // Set any parameter to null if you don't want to display it in the issue
     $result = Tissue::create(
         $e->getMessage(),
         $e->getCode(),
@@ -61,7 +88,7 @@ array(3) {
 }
 ```
 
-All parameters are optional. For security purposes, think twice before setting the `trace` parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to the files on your server.
+For security purposes, if your Github repository is public you should at the *very* least disable the `trace` parameter, unless you want strangers on the Internet to know the full path to the files on your server. [You may also want to read this](https://www.owasp.org/index.php/Improper_Error_Handling#Description).
 
 ## Credits
 
