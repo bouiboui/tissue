@@ -45,7 +45,7 @@ try {
 }
 ```
 
-**The "customized output" way**
+**The "customized output" way: `create`**
 ``` php
 // Not shown: include composer's autoload.php
 use bouiboui\Tissue\Tissue;
