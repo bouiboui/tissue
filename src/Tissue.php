@@ -48,6 +48,7 @@ class Tissue
     /**
      * Create an issue from an Exception
      * @param \Exception $e
+     * @return array
      * @throws ErrorException
      */
     public static function createFromException(\Exception $e)
@@ -57,7 +58,7 @@ class Tissue
         if (method_exists($e, 'getSeverity')) {
             $severity = $e->getSeverity();
         }
-        static::create(
+        return static::create(
             $e->getMessage(),
             $e->getCode(),
             $severity,

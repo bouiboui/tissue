@@ -75,14 +75,7 @@ class TissueTest extends \PHPUnit_Framework_TestCase
         } catch (\ErrorException $e) {
 
             Tissue::setConfigPath(TEST_CONFIG_PATH);
-            $result = Tissue::create(
-                $e->getMessage(),
-                $e->getCode(),
-                $e->getSeverity(),
-                $e->getFile(),
-                $e->getLine(),
-                $e->getTraceAsString()
-            );
+            $result = Tissue::createFromException($e);
 
             static::assertNotNull($result, 'null result received');
             static::assertTrue(array_key_exists('duplicate', $result), 'duplicate parameter missing');
