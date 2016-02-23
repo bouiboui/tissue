@@ -35,7 +35,17 @@
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
-<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c"># Not shown: include composer's autoload.php</span></span>
+<p><strong>The easy way: <code>bindUncaughtExceptionHandler</code></strong></p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c">// Not shown: include composer's autoload.php</span></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">bouiboui\Tissue\Tissue</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// All uncaught exceptions will trigger the creation of a Github issue</span></span>
+<span class="pl-s1"><span class="pl-c1">Tissue</span><span class="pl-k">::</span>bindUncaughtExceptionHandler();</span></pre></div>
+
+<p><strong>The catch-block-specific way: <code>createFromException</code></strong></p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c">// Not shown: include composer's autoload.php</span></span>
 <span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">bouiboui\Tissue\Tissue</span>;</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">try</span> {</span>
@@ -44,6 +54,23 @@
 <span class="pl-s1"></span>
 <span class="pl-s1">} <span class="pl-k">catch</span> (<span class="pl-c1">\</span><span class="pl-c1">ErrorException</span> <span class="pl-smi">$e</span>) {</span>
 <span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Only exceptions caught by this block will create Github issues</span></span>
+<span class="pl-s1">    <span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-c1">Tissue</span><span class="pl-k">::</span>createFromException(<span class="pl-smi">$e</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">}</span></pre></div>
+
+<p><strong>The "customized output" way: <code>create</code></strong></p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c">// Not shown: include composer's autoload.php</span></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">bouiboui\Tissue\Tissue</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">try</span> {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-c1">ErrorException</span>(<span class="pl-s"><span class="pl-pds">'</span>This is your issue title and message.<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">} <span class="pl-k">catch</span> (<span class="pl-c1">\</span><span class="pl-c1">ErrorException</span> <span class="pl-smi">$e</span>) {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Set any parameter to null if you don't want to display it in the issue</span></span>
 <span class="pl-s1">    <span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-c1">Tissue</span><span class="pl-k">::</span>create(</span>
 <span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getMessage(),</span>
 <span class="pl-s1">        <span class="pl-smi">$e</span><span class="pl-k">-&gt;</span>getCode(),</span>
@@ -73,7 +100,7 @@
 <span class="pl-s1">  <span class="pl-k">string</span>(<span class="pl-c1">50</span>) <span class="pl-s"><span class="pl-pds">"</span>https://api.github.com/repos/author/name/issues/35<span class="pl-pds">"</span></span></span>
 <span class="pl-s1">}</span></pre></div>
 
-<p>All parameters are optional. For security purposes, think twice before setting the <code>trace</code> parameter if your Github repository is public, unless you want strangers on the Internet to know the full path to the files on your server.</p>
+<p>For security purposes, if your Github repository is public you should at the <em>very</em> least disable the <code>trace</code> parameter, unless you want strangers on the Internet to know the full path to the files on your server. <a href="https://www.owasp.org/index.php/Improper_Error_Handling#Description">You may also want to read this</a>.</p>
 
 <h2>
 <a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h2>
@@ -81,12 +108,24 @@
 <ul>
 <li>bouiboui — <a href="https://github.com/bouiboui">Github</a> <a href="https://twitter.com/j_____________n">Twitter</a> <a href="http://cod3.net">Website</a>
 </li>
+<li><a href="https://github.com/bouiboui/tissue/graphs/contributors">All contributors</a></li>
 </ul>
 
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
-<p>Unlicense. Public domain, basically. Please treat it kindly. See <a href="LICENSE">License File</a> for more information.</p>
+<p>Unlicense. Public domain, basically. Please treat it kindly. See <a href="LICENSE">License File</a> for more information. </p>
+
+<p>This project uses the following open source projects </p>
+
+<ul>
+<li>
+<a href="https://github.com/KnpLabs/php-github-api">knplabs/github-api</a> by <a href="https://github.com/KnpLabs">KnpLabs</a> — <a href="https://github.com/KnpLabs/php-github-api/blob/master/LICENSE">License</a>.</li>
+<li>
+<a href="https://github.com/symfony/yaml">symfony/yaml</a> by <a href="https://github.com/fabpot">Fabien Potencier</a> — <a href="https://github.com/symfony/yaml/blob/master/LICENSE">License</a>.</li>
+<li>
+<a href="https://github.com/sebastianbergmann/phpunit">phpunit/phpunit</a> by <a href="https://github.com/sebastianbergmann">Sebastian Bergmann</a> — <a href="https://github.com/sebastianbergmann/phpunit/blob/master/LICENSE">License</a>.</li>
+</ul>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/bouiboui/tissue">Tissue</a> is maintained by <a href="https://github.com/bouiboui">bouiboui</a>.</span>
