@@ -40,22 +40,30 @@ class Tissue
      */
     public static function bindUncaughtExceptionHandler()
     {
-        set_exception_handler(
-            function (\Throwable $e) { // Throwable for PHP7 compatibility
-                $severity = null;
-                // getSeverity doesn't exist in base Exceptions
-                if (method_exists($e, 'getSeverity')) {
-                    $severity = $e->getSeverity();
-                }
-                static::create(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $severity,
-                    $e->getFile(),
-                    $e->getLine(),
-                    $e->getTraceAsString()
-                );
-            }
+        set_exception_handler(function (\Exception $e) {
+            static::createFromException($e);
+        });
+    }
+
+    /**
+     * Create an issue from an Exception
+     * @param \Exception $e
+     * @throws \ErrorException
+     */
+    public static function createFromException(\Exception $e)
+    {
+        $severity = null;
+        // getSeverity doesn't exist in base Exceptions
+        if (method_exists($e, 'getSeverity')) {
+            $severity = $e->getSeverity();
+        }
+        static::create(
+            $e->getMessage(),
+            $e->getCode(),
+            $severity,
+            $e->getFile(),
+            $e->getLine(),
+            $e->getTraceAsString()
         );
     }
 
@@ -89,7 +97,6 @@ class Tissue
             static::$config['repo']['author'],
             static::$config['repo']['name']
         );
-
     }
 
     /**

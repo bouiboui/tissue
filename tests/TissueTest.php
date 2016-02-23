@@ -2,9 +2,7 @@
 
 namespace bouiboui\Tissue;
 
-use Github\Exception\ErrorException;
-
-define('TEST_CONFIG_PATH', 'config/config.test.yaml');
+define('TEST_CONFIG_PATH', dirname(__DIR__) . '/config/config.test.yaml');
 
 /**
  * Class TissueTest
@@ -12,6 +10,7 @@ define('TEST_CONFIG_PATH', 'config/config.test.yaml');
  */
 class TissueTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * Tests what an issue created with partial information looks like (1/3)
      * @throws \ErrorException
@@ -20,7 +19,7 @@ class TissueTest extends \PHPUnit_Framework_TestCase
     {
         try {
 
-            throw new ErrorException('1/3 A partial error.');
+            throw new \ErrorException('1/3 A partial error.');
 
         } catch (\ErrorException $e) {
 
@@ -37,7 +36,7 @@ class TissueTest extends \PHPUnit_Framework_TestCase
     {
         try {
 
-            throw new ErrorException('2/3 A partial error.');
+            throw new \ErrorException('2/3 A partial error.');
 
         } catch (\ErrorException $e) {
 
@@ -54,7 +53,7 @@ class TissueTest extends \PHPUnit_Framework_TestCase
     {
         try {
 
-            throw new ErrorException('3/3 A partial error.');
+            throw new \ErrorException('3/3 A partial error.');
 
         } catch (\ErrorException $e) {
 
@@ -71,7 +70,7 @@ class TissueTest extends \PHPUnit_Framework_TestCase
     {
         try {
 
-            throw new ErrorException('This is your issue title and message.');
+            throw new \ErrorException('This is your issue title and message.');
 
         } catch (\ErrorException $e) {
 
@@ -100,4 +99,22 @@ class TissueTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+    /**
+     * Tries to create an issue from an Exception
+     * @throws \ErrorException
+     */
+    public function testFromException()
+    {
+        try {
+
+            throw new \ErrorException('This issue was created from an exception.');
+
+        } catch (\ErrorException $e) {
+
+            Tissue::setConfigPath(TEST_CONFIG_PATH);
+            Tissue::createFromException($e);
+        }
+    }
 }
+
